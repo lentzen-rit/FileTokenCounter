@@ -9,14 +9,14 @@
 
 ## Usage
 ### Option 1: 
-You can download the latest .exe file from the [RELEASES](https://github.com/Gullerboi/FileTokenCounter/releases) section on GitHub. This option requires no Python installation or dependencies. Simply download the executable, run it, and start counting tokens in your documents.
+You can download the latest .exe file from the [RELEASES](https://github.com/Ingenioeren/FileTokenCounter/releases) section on GitHub. This option requires no Python installation or dependencies. Simply download the executable, run it, and start counting tokens in your documents.
 
 ### Option 2: 
 1. Run the Python Script
 Clone the repository:
 
 ```Bash
-git clone https://github.com/Gullerboi/FileTokenCounter.git
+git clone https://github.com/Ingenioeren/FileTokenCounter.git
 cd FileTokenCounter
 ```
 
@@ -51,11 +51,11 @@ pyinstaller --onefile --windowed --icon=Token.ico --hidden-import=tiktoken_ext.o
 The `.exe` will be located in the `dist` folder. You can distribute this .exe as a standalone file.
 
 ## License
-This project is licensed under the MIT License. See the [LICENSE](https://github.com/Gullerboi/FileTokenCounter/blob/main/LICENSE) file for more details.
+This project is licensed under the MIT License. See the [LICENSE](https://github.com/Ingenioeren/FileTokenCounter/blob/main/LICENSE) file for more details.
 
 ## Requirements
 - Python 3.7 or higher (for users running the Python script directly)
-- Required packages listed in [requirements.txt](https://github.com/Gullerboi/FileTokenCounter/blob/main/requirements.txt)
+- Required packages listed in [requirements.txt](https://github.com/Ingenioeren/FileTokenCounter/blob/main/requirements.txt)
 
 ### Dependencies
 Install the dependencies by running:
