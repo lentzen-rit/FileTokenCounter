@@ -5,14 +5,14 @@
 ## Features
 - **Multi-Format Support**: Easily count tokens in `.pdf`, `.docx`, `.xlsx`, and `.pptx` files.
 - **User-Friendly Interface**: Simple, responsive GUI with dynamic feedback to indicate processing status.
-- **Built for LLMs**: Optimized for token models like OpenAI’s `gpt-3.5-turbo` and `gpt-4`.
+- **Built for LLMs**: Optimized for token models like OpenAI’s `gpt-4`.
 
 ## Usage
 ### Option 1: 
-You can download the latest .exe file from the [Releases](https://github.com/yourusername/FileTokenCounter/releases) section on GitHub. This option requires no Python installation or dependencies. Simply download the executable, run it, and start counting tokens in your documents.
+You can download the latest .exe file from the [RELEASES](https://github.com/Gullerboi/FileTokenCounter/releases) section on GitHub. This option requires no Python installation or dependencies. Simply download the executable, run it, and start counting tokens in your documents.
 
 ### Option 2: 
-Run the Python Script
+1. Run the Python Script
 Clone the repository:
 
 ```Bash
@@ -27,7 +27,8 @@ python FileTokenCounter.py
 ```
 
 The program will prompt you to select a file. Once a file is selected, it displays the token count.
-The tool supports PDF, Word, Excel, and PowerPoint files.
+The tool supports `PDF`, `Word`, `Excel`, and `PowerPoint` files.
+
 ## Building the Executable
 To build the .exe file yourself:
 
@@ -36,19 +37,25 @@ To build the .exe file yourself:
 pip install pyinstaller
 ```
 
-Run the following command in the project directory:
+2. Run the following command in the project directory:
 
 ```Bash
-pyinstaller --onefile --windowed --icon=Token.ico FileTokenCounter.py
+pyinstaller --onefile --windowed --icon=Token.ico --hidden-import=tiktoken_ext.openai_public --hidden-import=tiktoken_ext FileTokenCounter.py
 ```
-The .exe will be located in the dist folder. You can distribute this .exe as a standalone file.
+- Explanation:
+  - `--onefile`: Packages everything into a single .exe.
+  - `--windowed`: Ensures there is no command prompt window when running the .exe.
+  - `--icon=Token.ico`: Uses the specified icon file for the executable.
+  - `--hidden-import=tiktoken_ext.openai_public and --hidden-import=tiktoken_ext: Includes the necessary extensions for the tiktoken library, which are required to avoid issues like Unknown encoding cl100k_base.`
+
+The `.exe` will be located in the `dist` folder. You can distribute this .exe as a standalone file.
 
 ## License
-This project is licensed under the MIT License. See the LICENSE file for more details.
+This project is licensed under the MIT License. See the [LICENSE](https://github.com/Gullerboi/FileTokenCounter/blob/main/LICENSE) file for more details.
 
 ## Requirements
 - Python 3.7 or higher (for users running the Python script directly)
-- Required packages listed in `requirements.txt`
+- Required packages listed in [requirements.txt](https://github.com/Gullerboi/FileTokenCounter/blob/main/requirements.txt)
 
 ### Dependencies
 Install the dependencies by running:
