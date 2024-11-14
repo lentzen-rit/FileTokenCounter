@@ -9,7 +9,7 @@
 
 ## Usage
 ### Option 1: 
-You can download the latest .exe file from the Releases section on GitHub. This option requires no Python installation or dependencies. Simply download the executable, run it, and start counting tokens in your documents.
+You can download the latest .exe file from the [Releases](https://github.com/yourusername/FileTokenCounter/releases) section on GitHub. This option requires no Python installation or dependencies. Simply download the executable, run it, and start counting tokens in your documents.
 
 ### Option 2: 
 Run the Python Script
