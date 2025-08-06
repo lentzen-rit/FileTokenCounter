@@ -1,3 +1,5 @@
+import os
+import csv
 import fitz  # PyMuPDF for PDF files
 import tiktoken
 import tkinter as tk
@@ -113,6 +115,64 @@ def open_file_and_analyze():
     update_processing_dots()  # Start the dot effect
     threading.Thread(target=process_file, args=(file_path,), daemon=True).start()
 
+
+
+
+def process_folder(folder_path):
+    global processing
+    results = []
+    total_tokens = 0
+    supported_ext = (".pdf", ".docx", ".xlsx", ".pptx")
+    try:
+        for fname in os.listdir(folder_path):
+            if fname.lower().endswith(supported_ext):
+                fpath = os.path.join(folder_path, fname)
+                if fname.endswith(".pdf"):
+                    text = extract_text_from_pdf(fpath)
+                elif fname.endswith(".docx"):
+                    text = extract_text_from_docx(fpath)
+                elif fname.endswith(".xlsx"):
+                    text = extract_text_from_xlsx(fpath)
+                elif fname.endswith(".pptx"):
+                    text = extract_text_from_pptx(fpath)
+                else:
+                    continue
+                tokens = count_tokens(text)
+                results.append([fname, tokens])
+                total_tokens += tokens
+        # Save results to CSV only if checkbox is checked
+        if create_csv_var.get():
+            csv_path = os.path.join(folder_path, "token_counts.csv")
+            with open(csv_path, "w", newline="", encoding="utf-8") as f:
+                writer = csv.writer(f)
+                writer.writerow(["filename", "tokencount"])
+                writer.writerows(results)
+        result_entry.delete(0, tk.END)
+        result_entry.insert(0, str(total_tokens))
+        result_label.config(text="Total tokens in folder:")
+    except Exception as e:
+        result_label.config(text="An error occurred:")
+        result_entry.delete(0, tk.END)
+        result_entry.insert(0, str(e))
+    finally:
+        processing = False
+
+
+
+
+
+def open_folder_and_analyze():
+    global processing
+    folder_path = filedialog.askdirectory()
+    if not folder_path:
+        return
+    folder_name = os.path.basename(folder_path)
+    file_label.config(text=f"Selected Folder: {folder_name}")
+    processing = True
+    update_processing_dots()
+    threading.Thread(target=process_folder, args=(folder_path,), daemon=True).start()
+
+
 # Set up the Tkinter interface
 root = tk.Tk()
 root.title("File Token Counter")
@@ -120,12 +180,10 @@ root.geometry("")  # Let the window size dynamically adjust
 root.resizable(False, False)  # Lock the window size
 root.minsize(370, 250)  # Set minimum window size
 
-# Button to select file and count tokens
-select_button = tk.Button(root, text="Select File and Analyze", command=open_file_and_analyze)
-select_button.pack(pady=10)
 
-# Label to display the selected file name with adjustable wraplength
-file_label = tk.Label(root, text="Selected File: None", font=("Arial", 10), wraplength=400, anchor="w", justify="left")
+
+# Label to display the selected folder name with adjustable wraplength
+file_label = tk.Label(root, text="Selected Folder: None", font=("Arial", 10), wraplength=400, anchor="w", justify="left")
 file_label.pack(pady=5, fill="x", padx=10)
 
 # Frame for the token count result
@@ -139,14 +197,20 @@ result_label.pack(side="left")
 # Entry widget to display and copy only the token count
 result_entry = tk.Entry(frame, relief="flat", font=("Arial", 10), state="normal", readonlybackground="white", width=10)
 result_entry.pack(side="right", fill="x")
-
+create_csv_var = tk.BooleanVar(value=True)
+csv_checkbox = tk.Checkbutton(root, text="Create CSV file", variable=create_csv_var)
+csv_checkbox.pack(pady=2)
+# Button to select file and count tokens
+select_button = tk.Button(root, text="Select Folder and Analyze", command=open_folder_and_analyze)
+select_button.pack(pady=10)
 # Exit button to close the application
 exit_button = tk.Button(root, text="Exit", command=root.quit)
 exit_button.pack(pady=10)
 
 # Version number label in the bottom right
-version_label = tk.Label(root, text="Version 1.0", font=("Arial", 8), anchor="se")
+version_label = tk.Label(root, text="Version 1.1", font=("Arial", 8), anchor="se")
 version_label.place(relx=1.0, rely=1.0, x=-5, y=-5, anchor="se")
+
 
 # Run the Tkinter main loop
 root.mainloop()
